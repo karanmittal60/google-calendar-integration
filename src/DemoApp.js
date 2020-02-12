@@ -8,13 +8,13 @@ import './main.css'
 
 export default class DemoApp extends React.Component {
 
-    calendarComponentRef = React.createRef()
+    calendarComponentRef = React.createRef();
     state = {
         calendarWeekends: true,
         calendarEvents: [ // initial event data
             { title: 'Event Now', start: new Date() }
         ]
-    }
+    };
 
     render() {
         return (
@@ -47,12 +47,12 @@ export default class DemoApp extends React.Component {
         this.setState({ // update a property
             calendarWeekends: !this.state.calendarWeekends
         })
-    }
+    };
 
     gotoPast = () => {
         let calendarApi = this.calendarComponentRef.current.getApi()
         calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
-    }
+    };
 
     handleDateClick = (arg) => {
         // eslint-disable-next-line no-restricted-globals
