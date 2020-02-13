@@ -4,8 +4,8 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // needed for dayClick
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
-import ApiCalendar from 'react-google-calendar-api';
-import moment from 'moment';
+import { gapi } from 'gapi-script'
+
 
 
 import './main.css'
@@ -21,86 +21,49 @@ export default class DemoApp extends React.Component {
     };
 
     componentDidMount() {
-        console.log('componentDidMount')
+        console.log('asdasdasdasdasdadasdsa')
+        this.loadGapi()
     }
 
-    handleItemClick = (event, name) => {
-        if (name === 'sign-in') {
-            try {
-                ApiCalendar.handleAuthClick();
-            } catch (error) {
-                console.log("error", error, error.message);
-            }
-        } else if (name === 'sign-out') {
-            ApiCalendar.handleSignoutClick();
-        }
-    };
+    loadGapi = () => {
+        console.log("loadGapi");
+        const API_KEY = 'AIzaSyCHH5QYUxkVFShUCMkXDoMRKK6MP6l_Thg';
 
-    addEvent = () => {
+        const script = document.createElement("script");
+        script.src = "https://apis.google.com/js/client.js";
 
-        var tomorrow = new Date();
-
-
-        const eventFromNow = {
-            summary: "Tattoo san",
-            Description: 'Tattoo Description1',
-            CalendarId: 'CalendarId Description1',
-            start: {
-                dateTime: moment().format(),
-                // dateTime: new Date(),
-                // "timeZone": 'India Standard Time'
-            },
-            end: {
-                dateTime: moment().add(1, 'hours').format(),
-                // dateTime: new Date(tomorrow.setDate(tomorrow.getDate() + 1))
-                // "timeZone": 'India Standard Time'
-            },
-            time: 60,
-        };
-
-        console.log("==ApiCalendar==>", eventFromNow);
-        ApiCalendar.createEvent(eventFromNow)
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((error) => {
-                console.log(error);
+        console.log("scriptscript", script);
+        script.onload = () => {
+            console.log('asdasdasd',gapi)
+            gapi.client.init({
+                'apiKey': API_KEY,
+                // Your API key will be automatically added to the Discovery Document URLs.
+                'discoveryDocs': ['https://people.googleapis.com/$discovery/rest'],
+                // clientId and scope are optional if auth is not required.
+                'clientId': 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
+                'scope': 'profile',
+            }).then(function() {
+                // 3. Initialize and make the API request.
+                return gapi.client.people.people.get({
+                    'resourceName': 'people/me',
+                    'requestMask.includeField': 'person.names'
+                });
+            }).then(function(response) {
+                console.log(response.result);
+            }, function(reason) {
+                console.log('Error: ' + reason.result.error.message);
             });
+        }
 
-        // ApiCalendar.createEventFromNow(eventFromNow)
-        //     .then((result) => {
-        //         console.log(result);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
 
-        // ApiCalendar.listUpcomingEvents(10)
-        //     .then(({result}) => {
-        //         console.log(result.items);
-        //     });
-    };
+
+
+    }
 
     render() {
         return (
             <div className='demo-app'>
                 <div className='demo-app-top'>
-                    <button
-                        onClick={(e) => this.handleItemClick(e, 'sign-in')}
-                    >
-                        sign-in
-                    </button>
-                    <button
-                        onClick={(e) => this.handleItemClick(e, 'sign-out')}
-                    >
-                        sign-out
-                    </button>
-
-
-                    <button onClick={this.addEvent}> add event  </button>
-
-
-
                     <button onClick={ this.toggleWeekends }>toggle weekends</button>&nbsp;
                     <button onClick={ this.gotoPast }>go to a date in the past</button>&nbsp;
                     (also, click a date/time to add an event)

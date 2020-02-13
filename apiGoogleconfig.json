@@ -1,0 +1,14 @@
+{
+  "clientId": "958579999419-0dp5re0bf545qqrsl5kom8ask2l88u0v.apps.googleusercontent.com",
+  "apiKey": "AIzaSyD1nYDo114lBWvBnHZ5wQ6M8MR3nv0qtx8",
+  "scope": "https://www.googleapis.com/auth/calendar",
+  "discoveryDocs": ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+  "project_id":"tattoo-studio-267811",
+  "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+  "token_uri":"https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+  "client_secret":"gaEQirG0-IVQIzgng04t2978",
+  "javascript_origins":[
+    "http://localhost:3000"
+  ]
+}
